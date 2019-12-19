@@ -1,5 +1,5 @@
 
-<form action="<?= $_SERVER['PHP_SELF'] . '?a=personalData&c=accounts'; ?>" method="POST">
+<form action="<?= $_SERVER['PHP_SELF'] . '?a=personalData&c=accounts&j=test'; ?>" method="POST">
 <fieldset>
 <legend>personal data</legend>
 <input type="text" name="firstName" 

@@ -2,24 +2,31 @@
 
 <?php
 
-if(isset($_GET['j'])||isset($_POST['submitEdit'])){
+if((isset($_GET['j'])&&$_GET['j']=='test')||isset($_POST['submitEdit'])){
     include_once __DIR__.'/personalDataEdit.php';
+}
+else if(isset($_GET['j'])&&$_GET['j']=='test1'){
+    include_once __DIR__.'/addressEdit.php';
+}
+else if(isset($_GET['j'])&&$_GET['j']=='test2'){
+    include_once __DIR__.'/passwordEdit.php';
 }
 else{
 
  include_once __DIR__.'/personalDataNoEdit.php';
 }
 
-if(isset($_POST['firstName'])
- &&isset($_POST['lastName'])
- &&isset($_POST['email'])
- &&isset($_POST['phoneNumber'])){
-    
-    validatePersonalDataChange($this->_params['error']
-    , $this->_params['customer'][0]['gender'], $this->_params['customer'][0]['addressID']
-    ,$this->_params['customer'][0]['dateOfBirth'],$this->_params['account'][0]['id']
-    ,$this->_params['account'][0]['email'],$this->_params['account'][0]['password']);
- }
+            echo $this->_params['customer'][0]['gender']; 
+            echo $this->_params['customer'][0]['addressID'];
+            echo $this->_params['customer'][0]['dateOfBirth'];
+            echo $this->_params['account'][0]['id'];
+            echo$this->_params['account'][0]['email'];
+           echo $this->_params['account'][0]['password'];
+           echo $_COOKIE['id'];
+           var_dump($_SESSION['id']);
+           var_dump($this->_params['account'][0]['id']);
+
+
 
 
 

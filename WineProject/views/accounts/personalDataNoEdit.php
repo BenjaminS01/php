@@ -10,12 +10,15 @@
 </table>
 </fieldset>
 <fieldset>
-<legend>address <a href="?c=pages&a=register">edit</a></legend>
+<legend>address <a href="?c=accounts&a=personalData&j=test1">edit</a></legend>
 <table>
 <tr><td>zip: </td><td><?php echo $this->_params['address'][0]['zip'];?></td></tr>
 <tr><td>city</td><td><?php echo $this->_params['address'][0]['city'];?></td></tr>
 <tr><td>street</td><td><?php echo $this->_params['address'][0]['street'];?></td></tr>
 <tr><td>country</td><td><?php echo $this->_params['address'][0]['country'];?></td></tr>
 </table>
+</fieldset>
+<fieldset>
+<p>change password <a href="?c=accounts&a=personalData&j=test2">edit</a></p>
 </fieldset>
 </div>

@@ -306,13 +306,13 @@ function dateOfBirthInRightOrder($dateOfBirth){
     return $newDate;
 }
 
-function changeAccountsPersonalData($gender,$dateOfBirth,$addressID,$accountID,$email,$password,&$error){
+function updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$accountID,$email,$password,&$error){
 
 
    /* if(isset($_POST['firstName'])&&isset($_POST['lastName'])
      &&isset($_POST['email'])&&isset($_POST['phoneNumber'])){*/
        if(isset($_SESSION['id'])){ 
-        $customer = ['id'=>$_SESSION['id'],
+        $customer = ['id'=>intval($_SESSION['id']),
         'firstName'=>$_POST['firstName'],
         'lastName'=>$_POST['lastName'],
         'gender'=>$gender,
@@ -327,48 +327,60 @@ function changeAccountsPersonalData($gender,$dateOfBirth,$addressID,$accountID,$
          'gender'=>$gender,
          'dateOfBirth'=>$dateOfBirth,
          'phoneNumber'=>$_POST['phoneNumber'],
-         'addressID'=>$addresID];
+         'addressID'=>$addressID];
        }
        
-       $account=['id'=>$accountID,
+       $account=['id'=>intval($accountID),
        'email'=>$_POST['email'],
        'password'=>$password,
        'customerID'=>$customer['id']];
 
         $customer1 = new \skwd\models\Customer($customer);
 
-        $customer1->validate($error);
+        //$customer1->validate($error);
         $customer1->save($error);
         $account1 = new \skwd\models\Account($account);
-        $account1->validate($error);
+       // $account1->validate($error);
         $account1->save($error);
         
     // }
 }
-function validatePersonalDataChange(&$error, $gender, $addresID, $dateOfBirth,$accountID,$email,$password){
+function validatePersonalDataAccount(&$error, $gender, $addressID, $dateOfBirth,$accountID,$email,$password){
     if(strlen($_POST['firstName'])<=2){
         array_push($error,"Please fill out first name field");
+        return false;
     }
     else if(strlen($_POST['lastName'])<=2){
         array_push($error,"Please fill out last name field");
+        return false;
     }
     else if(strlen($_POST['email'])<=2){
         array_push($error,"Please fill out email field");
+        return false;
     }
     else if(strlen($_POST['phoneNumber'])<=2){
         array_push($error,"Please fill out phone number field");
+        return false;
     }
     else{
-        $test = true;
+       /* $test = true;
         if(strcmp($email, $_POST['email'])!==0){
            $test = isUnique($error,$_POST['email']);
            if($test === true){
             changeAccountsPersonalData($gender,$dateOfBirth,$addresID,$accountID,$email,$password,$error);
+            return true;
+           }
+           else{
+               return false;
            }
         }
         else{
             changeAccountsPersonalData($gender,$dateOfBirth,$addresID,$accountID,$email,$password,$error);
-        }
+            return true;
+        } */
+
+        updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$accountID,$email,$password,$error);
+        return true;
     }
 }
 
