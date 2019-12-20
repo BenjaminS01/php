@@ -63,7 +63,7 @@ function validatePasswordForm(&$errors, $password)
 {
 
     if (!preg_match('/[a-zA-Z]/', $password)) {
-        array_push($errors[] ,"Use at least one letter symbol for your password");
+        array_push($errors ,"Use at least one letter symbol for your password");
         return false;
     }
     if (!preg_match('/[0-9]/', $password)) {
@@ -306,46 +306,42 @@ function dateOfBirthInRightOrder($dateOfBirth){
     return $newDate;
 }
 
-function updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$accountID,$email,$password,&$error){
+function updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$customerID,$email,$password,&$error){
 
-
-   /* if(isset($_POST['firstName'])&&isset($_POST['lastName'])
-     &&isset($_POST['email'])&&isset($_POST['phoneNumber'])){*/
-       if(isset($_SESSION['id'])){ 
-        $customer = ['id'=>intval($_SESSION['id']),
+       
+        $customer = ['id'=>$customerID,
         'firstName'=>$_POST['firstName'],
         'lastName'=>$_POST['lastName'],
         'gender'=>$gender,
         'dateOfBirth'=>$dateOfBirth,
         'phoneNumber'=>$_POST['phoneNumber'],
         'addressID'=>$addressID];
-       }
-       elseif(isset($_COOKIE['id'])){
-         $customer = ['id'=>$_COOKIE['id'],
-         'firstName'=>$_POST['firstName'],
-         'lastName'=>$_POST['lastName'],
-         'gender'=>$gender,
-         'dateOfBirth'=>$dateOfBirth,
-         'phoneNumber'=>$_POST['phoneNumber'],
-         'addressID'=>$addressID];
-       }
        
-       $account=['id'=>intval($accountID),
+       if(isset($_SESSION['id'])){
+       $account=['id'=>$_SESSION['id'],
        'email'=>$_POST['email'],
        'password'=>$password,
        'customerID'=>$customer['id']];
+       }
+       else if(isset($_COOKIE['id'])){
+        $account=['id'=>$_COOKIE['id'],
+        'email'=>$_POST['email'],
+        'password'=>$password,
+        'customerID'=>$customer['id']];
+       }
 
+      
+        $account1 = new \skwd\models\Account($account);
+       // $account1->validate($error);
+        $account1->save($error);
         $customer1 = new \skwd\models\Customer($customer);
 
         //$customer1->validate($error);
         $customer1->save($error);
-        $account1 = new \skwd\models\Account($account);
-       // $account1->validate($error);
-        $account1->save($error);
         
     // }
 }
-function validatePersonalDataAccount(&$error, $gender, $addressID, $dateOfBirth,$accountID,$email,$password){
+function validatePersonalDataAccount(&$error, $gender, $addressID, $dateOfBirth,$customerID,$email,$password){
     if(strlen($_POST['firstName'])<=2){
         array_push($error,"Please fill out first name field");
         return false;
@@ -363,24 +359,23 @@ function validatePersonalDataAccount(&$error, $gender, $addressID, $dateOfBirth,
         return false;
     }
     else{
-       /* $test = true;
+        $test = true;
         if(strcmp($email, $_POST['email'])!==0){
            $test = isUnique($error,$_POST['email']);
            if($test === true){
-            changeAccountsPersonalData($gender,$dateOfBirth,$addresID,$accountID,$email,$password,$error);
+            updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$customerID,$email,$password,$error);
             return true;
            }
            else{
                return false;
-           }
+          }
         }
         else{
-            changeAccountsPersonalData($gender,$dateOfBirth,$addresID,$accountID,$email,$password,$error);
+            updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$customerID,$email,$password,$error);
             return true;
-        } */
+        } 
 
-        updatePersonalDataAccount($gender,$dateOfBirth,$addressID,$accountID,$email,$password,$error);
-        return true;
     }
+
 }
 

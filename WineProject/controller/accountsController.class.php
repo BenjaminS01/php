@@ -28,11 +28,11 @@ class AccountsController extends \skwd\core\Controller{
         if(isset($_POST['submitEdit'])){
 
             if( validatePersonalDataAccount($this->_params['error']
-            ,$this->_params['customer'][0]['gender'], intval($this->_params['customer'][0]['addressID'])
-            ,$this->_params['customer'][0]['dateOfBirth'],intval($this->_params['account'][0]['id'])
+            ,$this->_params['customer'][0]['gender'], $this->_params['customer'][0]['addressID']
+            ,$this->_params['customer'][0]['dateOfBirth'],$this->_params['customer'][0]['id']
             ,$this->_params['account'][0]['email'],$this->_params['account'][0]['password']))
             {
-            header('Location: index.php?c=accounts&a=personalData');
+                header('Location: index.php?c=accounts&a=personalData');
             }
 
         }
@@ -42,7 +42,8 @@ class AccountsController extends \skwd\core\Controller{
         if(isset($_POST['submitEditPassword'])
             &&isPasswordfromUser($_POST['oldPassword']
               ,$this->_params['account'][0]['email'],$this->_params['error']) 
-            && validatePassword($this->_params['error'],$_POST['newPassword'],$_POST['newPasswordCheck'])){
+            && validatePassword($this->_params['error'],$_POST['newPassword'],$_POST['newPasswordCheck'])
+            &&validatePasswordForm($this->_params['error'], $_POST['newPassword'])){
 
                 $account=['id'=>$this->_params['account'][0]['id'],
                 'email'=>$this->_params['account'][0]['email'],
