@@ -617,7 +617,7 @@ function createOrder($shopingcartItems, &$errors, $customer, $country, $city, $z
 
     $shipDate = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
 
-    $address = validateAddressTableCheckout($errors,$country, $city, $zip, $street);
+    $address = validateAddressTableCheckout($errors,$city, $zip, $street, $country);
 
     if(count($errors)===0){
         $order=['id'=>null,
