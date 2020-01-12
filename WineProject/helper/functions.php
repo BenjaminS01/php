@@ -309,16 +309,6 @@ function rememberMe($email, $id)
     setcookie('id', $id, $duration, '/');
 }
 
-function emailSessionOrCookie()
-{
-    if (isset($_SESSION['email'])) {
-        return $_SESSION['email'];
-    } else if (isset($_COOKIE['email'])) {
-        return $_COOKIE['email'];
-    } else return null;
-}
-
-///////////////////////////////////////////////////BEN///////////////////Die funktionen sind gleich benutz meine, ich brauche sie
 function usersIdIfLoggedIn()
 {
     if (isset($_SESSION['id'])) {
@@ -338,7 +328,6 @@ function dateOfBirthInRightOrder($dateOfBirth)
 
 function updatePersonalDataAccount($gender, $dateOfBirth, $addressID, $customerID, $email, $password, &$error)
 {
-
 
     $customer = ['id' => $customerID,
         'firstName' => $_POST['firstName'],
@@ -480,7 +469,7 @@ function userIsLoggedIn($accountId, &$errors)
         //if user wants to delete  his purchase $_GET['cartOp'] must be set
         deleteProductFromShoppingCart($productId,$shoppingCartId, $errors);
     }//case user wants to insert new item or add quantity +1 to old item
-    if (/*isset($_GET['cartOp'])*//*&& ($_GET['cartOp']==='upDate')*/   isset($_GET['i']) && isset($_GET['p'])){
+    if ( isset($_GET['i']) && isset($_GET['p']) && (isset($_GET['cartOp']) && ($_GET['cartOp']==='upDate')  || 1)){
         upDateOrInsertProductInShoppingCart($_GET['i'], $_GET['p'], $shoppingCartId, $errors);
     }
 
@@ -526,10 +515,6 @@ function editAddress(&$error, $addressId=null){
     }
   
 }
-
-
-////////////////////////////////////////////////////////////////////
-
 function requiredCheckCheckout(&$errors)
 {
     
@@ -548,9 +533,7 @@ function requiredCheckCheckout(&$errors)
         array_push($errors, "Please choose a pay method");
     }
 
-    if ($_POST['country'] === 'Country') {
-        array_push($errors, "Please enter valid country");
-    }
+    validateCountry($errors);
 
     
     if(count($errors)===0){
@@ -579,9 +562,6 @@ function shipPrice($orderPrice){
 
     return $shipPrice;
 }
-
-
-
 function validateAddressTableCheckout(&$errors, $city, $zip, $street, $country)
 {
 
